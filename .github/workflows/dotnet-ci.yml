@@ -1,0 +1,34 @@
+name: .NET CI Pipeline
+
+on:
+  push:
+    branches: [ main, "featuer/*" ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        # 🟦 توضیح: کد پروژه را از ریپازیتوری می‌گیرد
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+        # 🟦 توضیح: نسخه .NET را نصب و آماده می‌کند
+
+      - name: Restore dependencies
+        run: dotnet restore
+        # 🟦 توضیح: پکیج‌های NuGet را دانلود می‌کند
+
+      - name: Build project
+        run: dotnet build --configuration Release --no-restore
+        # 🟦 توضیح: پروژه را در حالت Release بیلد می‌کند
+
+      - name: Run tests
+        run: dotnet test --no-build --verbosity normal
+        # 🟦 توضیح: تست‌ها را اجرا می‌کند و نتیجه را نمایش می‌دهد
