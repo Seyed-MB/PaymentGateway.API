@@ -1,27 +1,24 @@
-# 1. انتخاب base image دات‌نت Runtime
+# Base runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
-EXPOSE 8080
-# تنظیم پورت داخل کانتینر
-ENV ASPNETCORE_URLS=http://+:8080
+EXPOSE 80
 
-# 2. ساخت پروژه با SDK
+# Build stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
+
+# Copy csproj and restore first (Docker cache optimization)
 COPY ["PaymentGateway.API/PaymentGateway.API.csproj", "PaymentGateway.API/"]
 RUN dotnet restore "PaymentGateway.API/PaymentGateway.API.csproj"
+
+# Copy everything else and build/publish
 COPY . .
 WORKDIR "/src/PaymentGateway.API"
 RUN dotnet build "PaymentGateway.API.csproj" -c Release -o /app/build
-
-# 3. Publish پروژه
-FROM build AS publish
 RUN dotnet publish "PaymentGateway.API.csproj" -c Release -o /app/publish
 
-# 4. Copy به base و تعیین entrypoint
+# Final stage
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENV ASPNETCORE_ENVIRONMENT=Development
-
+COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "PaymentGateway.API.dll"]

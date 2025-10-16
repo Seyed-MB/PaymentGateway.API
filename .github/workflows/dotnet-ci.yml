@@ -33,9 +33,7 @@ jobs:
 
       - name: Docker Compose Build & Up
         run: |
-          # Stop and remove all existing containers
           docker-compose -f docker-compose.yml down
-          # Build new images and run containers
           docker-compose -f docker-compose.yml up -d --build
 
       - name: Wait for API to start

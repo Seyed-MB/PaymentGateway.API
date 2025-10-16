@@ -15,11 +15,10 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Progr
 var app = builder.Build();
 
 // Configure
-if (app.Environment.IsDevelopment())
-{
+ 
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+ 
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
