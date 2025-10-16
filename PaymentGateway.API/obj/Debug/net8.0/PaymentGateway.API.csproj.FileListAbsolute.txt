@@ -65,6 +65,7 @@ C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.API\obj\Debug\net8.0\Pay
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.API\obj\Debug\net8.0\PaymentGateway.API.csproj.CoreCompileInputs.cache
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.API\obj\Debug\net8.0\PaymentGateway.API.MvcApplicationPartsAssemblyInfo.cs
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.API\obj\Debug\net8.0\PaymentGateway.API.MvcApplicationPartsAssemblyInfo.cache
+C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.API\obj\Debug\net8.0\PaymentGateway.API.sourcelink.json
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.API\obj\Debug\net8.0\staticwebassets.build.json
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.API\obj\Debug\net8.0\staticwebassets.development.json
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.API\obj\Debug\net8.0\staticwebassets\msbuild.PaymentGateway.API.Microsoft.AspNetCore.StaticWebAssets.props

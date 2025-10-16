@@ -16,10 +16,11 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateProductCommand command)
+    public async Task<IActionResult> Create([FromBody] PaymentGateway.Application.Models.CreateProductCommand command)
     {
         var id = await _mediator.Send(command);
-        return Ok(new { Message = "Product created successfully", ProductId = id });
+        Console.WriteLine("Feature branch test log");
+        return Ok(new { Message = "Product created successfully444", ProductId = id });
     }
 
     [HttpGet]

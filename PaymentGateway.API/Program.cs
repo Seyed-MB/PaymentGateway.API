@@ -1,5 +1,6 @@
 using MediatR;
-using PaymentGateway.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
+ 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IDapperRepository, DbConnectionFactory>();
+ 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 var app = builder.Build();

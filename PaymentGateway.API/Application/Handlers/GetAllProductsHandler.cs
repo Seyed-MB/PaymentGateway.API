@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using MediatR;
 using PaymentGateway.Domain.Entities;
-using PaymentGateway.Infrastructure;
+ 
 
 namespace PaymentGateway.Application.Handlers;
 

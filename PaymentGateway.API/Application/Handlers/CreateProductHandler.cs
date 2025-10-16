@@ -1,26 +1,24 @@
 ﻿using Dapper;
 using MediatR;
-using PaymentGateway.Domain.Entities;
-using PaymentGateway.Infrastructure;
-
-namespace PaymentGateway.Application.Handlers;
-
-public record CreateProductCommand(string Name, decimal Price) : IRequest<int>;
+using System.Threading;
+using System.Threading.Tasks;
+using PaymentGateway.Application.Models;
+ 
+using System.Data;
 
 public class CreateProductHandler : IRequestHandler<CreateProductCommand, int>
 {
-    private readonly IDapperRepository _db;
+    private readonly IDapperRepository _repository;
 
-    public CreateProductHandler(IDapperRepository db)
+    public CreateProductHandler(IDapperRepository repository)
     {
-        _db = db;
+        _repository = repository;
     }
 
     public async Task<int> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
-        const string sql = "INSERT INTO Products (Name, Price) VALUES (@Name, @Price); SELECT CAST(SCOPE_IDENTITY() as int);";
-        using var connection = _db.CreateConnection();
-        var id = await connection.QuerySingleAsync<int>(sql, new { request.Name, request.Price });
-        return id;
+        using IDbConnection connection = _repository.CreateConnection();
+        var sql = "INSERT INTO Products (Name, Price) VALUES (@Name, @Price); SELECT CAST(SCOPE_IDENTITY() as int)";
+        return await connection.QuerySingleAsync<int>(sql, new { request.Name, request.Price });
     }
 }

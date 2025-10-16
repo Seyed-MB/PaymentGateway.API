@@ -1,10 +1,4 @@
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\bin\Debug\net8.0\CoverletSourceRootsMapping_PaymentGateway.Tests
-C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\obj\Debug\net8.0\PaymentGateway.Tests.csproj.AssemblyReference.cache
-C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\obj\Debug\net8.0\PaymentGateway.Tests.GeneratedMSBuildEditorConfig.editorconfig
-C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\obj\Debug\net8.0\PaymentGateway.Tests.AssemblyInfoInputs.cache
-C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\obj\Debug\net8.0\PaymentGateway.Tests.AssemblyInfo.cs
-C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\obj\Debug\net8.0\PaymentGateway.Tests.csproj.CoreCompileInputs.cache
-C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\obj\Debug\net8.0\PaymentGateway.Tests.sourcelink.json
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\bin\Debug\net8.0\testhost.dll
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\bin\Debug\net8.0\PaymentGateway.API.deps.json
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\bin\Debug\net8.0\PaymentGateway.API.runtimeconfig.json
@@ -158,6 +152,12 @@ C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\bin\Debug\net8.0\r
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\bin\Debug\net8.0\PaymentGateway.API.dll
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\bin\Debug\net8.0\PaymentGateway.API.pdb
+C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\obj\Debug\net8.0\PaymentGateway.Tests.csproj.AssemblyReference.cache
+C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\obj\Debug\net8.0\PaymentGateway.Tests.GeneratedMSBuildEditorConfig.editorconfig
+C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\obj\Debug\net8.0\PaymentGateway.Tests.AssemblyInfoInputs.cache
+C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\obj\Debug\net8.0\PaymentGateway.Tests.AssemblyInfo.cs
+C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\obj\Debug\net8.0\PaymentGateway.Tests.csproj.CoreCompileInputs.cache
+C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\obj\Debug\net8.0\PaymentGateway.Tests.sourcelink.json
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\obj\Debug\net8.0\PaymentGateway.Tests.csproj.CopyComplete
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\obj\Debug\net8.0\PaymentGateway.Tests.dll
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\obj\Debug\net8.0\refint\PaymentGateway.Tests.dll

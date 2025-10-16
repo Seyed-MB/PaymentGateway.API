@@ -1,34 +1,52 @@
-name: .NET CI Pipeline
+name: .NET CI with Docker
 
 on:
   push:
-    branches: [ main, "featuer/*" ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - main
+      - feature/*
 
 jobs:
-  build:
-    runs-on: windows-latest
+  build-test-docker:
+    runs-on: ubuntu-latest
+
+    services:
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        ports:
+          - 1434:1433
+        env:
+          SA_PASSWORD: "YourPassword123"
+          ACCEPT_EULA: "Y"
+        options: >-
+          --health-cmd "exit 0" 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        # 🟦 توضیح: کد پروژه را از ریپازیتوری می‌گیرد
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-        # 🟦 توضیح: نسخه .NET را نصب و آماده می‌کند
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
 
-      - name: Restore dependencies
-        run: dotnet restore
-        # 🟦 توضیح: پکیج‌های NuGet را دانلود می‌کند
+    - name: Restore dependencies
+      run: dotnet restore PaymentGateway.API/PaymentGateway.API.csproj
 
-      - name: Build project
-        run: dotnet build --configuration Release --no-restore
-        # 🟦 توضیح: پروژه را در حالت Release بیلد می‌کند
+    - name: Build project
+      run: dotnet build PaymentGateway.API/PaymentGateway.API.csproj --configuration Release --no-restore
 
-      - name: Run tests
-        run: dotnet test --no-build --verbosity normal
-        # 🟦 توضیح: تست‌ها را اجرا می‌کند و نتیجه را نمایش می‌دهد
+    - name: Run unit tests
+      run: dotnet test PaymentGateway.Application.Tests/PaymentGateway.Application.Tests.csproj --no-build --verbosity normal
+
+    - name: Publish project
+      run: dotnet publish PaymentGateway.API/PaymentGateway.API.csproj -c Release -o ./publish
+
+    - name: Build Docker image
+      run: docker build -t paymentgateway.api .
+
+    - name: Run Docker container
+      run: docker run -d -p 8080:80 --name paymentgateway-api paymentgateway.api
