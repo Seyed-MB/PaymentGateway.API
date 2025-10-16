@@ -20,7 +20,7 @@ public class ProductController : ControllerBase
     {
         var id = await _mediator.Send(command);
         Console.WriteLine("Feature branch test log");
-        return Ok(new { Message = "Product created successfully4445655654", ProductId = id });
+        return Ok(new { Message = "ËÞËÞËÞËÞËÞProduct created successfully4445655654", ProductId = id });
     }
 
     [HttpGet]
