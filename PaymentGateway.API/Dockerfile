@@ -7,11 +7,11 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy csproj and restore first (Docker cache optimization)
+# Copy csproj و restore
 COPY ["PaymentGateway.API.csproj", "./"]
 RUN dotnet restore "PaymentGateway.API.csproj"
 
-# Copy everything else and build/publish
+# Copy همه فایل‌ها و build/publish
 COPY . ./
 RUN dotnet build "PaymentGateway.API.csproj" -c Release -o /app/build
 RUN dotnet publish "PaymentGateway.API.csproj" -c Release -o /app/publish
@@ -19,5 +19,5 @@ RUN dotnet publish "PaymentGateway.API.csproj" -c Release -o /app/publish
 # Final stage
 FROM base AS final
 WORKDIR /app
-COPY --from=build /app/publish .
+COPY --from=build /app/publish ./
 ENTRYPOINT ["dotnet", "PaymentGateway.API.dll"]
