@@ -10,42 +10,49 @@ jobs:
   build-and-deploy:
     runs-on: self-hosted
 
-    defaults:
-      run:
-        working-directory: ./PaymentGateway.API/PaymentGateway.API
-
     steps:
-      # 1️⃣ دریافت سورس
+      # 1️⃣ Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # 2️⃣ تنظیم .NET SDK
+      # 2️⃣ Setup .NET
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
           use-global-dotnet: true
 
-      # 3️⃣ Restore
+      # 3️⃣ Restore dependencies
       - name: Restore dependencies
-        run: dotnet restore PaymentGateway.API.csproj
+        run: dotnet restore PaymentGateway.API/PaymentGateway.API.csproj
 
-      # 4️⃣ Build
+      # 4️⃣ Build project
       - name: Build project
-        run: dotnet build PaymentGateway.API.csproj --configuration Release --no-restore
+        run: dotnet build PaymentGateway.API/PaymentGateway.API.csproj --configuration Release --no-restore
 
-      # 5️⃣ Unit tests (اختیاری: فقط اگر مسیر تست‌ها درست باشه)
-      # - name: Run unit tests
-      #   run: dotnet test ../../PaymentGateway.Tests/PaymentGateway.Tests.csproj --no-build --verbosity normal
+      # 5️⃣ Run unit tests
+      - name: Run unit tests
+        run: dotnet test PaymentGateway.Tests/PaymentGateway.Tests.csproj --no-build --verbosity normal
 
-      # 6️⃣ Publish
+      # 6️⃣ Publish project
       - name: Publish project
-        run: dotnet publish PaymentGateway.API.csproj -c Release -o ./publish
+        run: dotnet publish PaymentGateway.API/PaymentGateway.API.csproj -c Release -o ./publish
 
       # 7️⃣ Docker Compose Build & Up
       - name: Docker Compose Build & Up
         run: |
+          cd PaymentGateway.API/PaymentGateway.API  # مسیر Dockerfile
           docker-compose down
           docker-compose up -d --build
+
+      # 8️⃣ Wait for API to start
+      - name: Wait for API to start
+        run: |
+          retries=10
+          until curl -f http://localhost:8080/swagger || [ $retries -eq 0 ]; do
+            echo "Waiting for API..."
+            sleep 5
+            ((retries--))
+          done
