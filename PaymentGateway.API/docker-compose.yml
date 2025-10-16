@@ -8,7 +8,7 @@ services:
     ports:
       - "1434:1433"
     volumes:
-      - sqlserver-data:/var/opt/mssql  # ⚡ این خط باعث میشه دیتابیس حفظ بشه
+      - sqlserver-data:/var/opt/mssql
     healthcheck:
       test: ["CMD", "sqlcmd", "-S", "localhost", "-U", "sa", "-P", "YourPassword123", "-Q", "SELECT 1"]
       interval: 10s
@@ -24,10 +24,10 @@ services:
       - "8080:8080"
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__DefaultConnection: "Server=localhost;Database=PaymentGatewayDockerDb;User Id=sa;Password=YourPassword123;TrustServerCertificate=True"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=PaymentGatewayDockerDb;User Id=sa;Password=YourPassword123;TrustServerCertificate=True"
     depends_on:
-      - sqlserver
-  
+      sqlserver:
+        condition: service_healthy
     networks:
       - paymentgateway-net
     restart: unless-stopped
@@ -37,4 +37,4 @@ networks:
     driver: bridge
 
 volumes:
-  sqlserver-data:   # ⚡ volume تعریف شده برای حفظ دیتابیس
+  sqlserver-data:
