@@ -11,34 +11,48 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      # 1️⃣ Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      # 2️⃣ Show workspace (برای debug)
+      - name: Show workspace
+        run: |
+          pwd
+          ls -R
+
+      # 3️⃣ Use installed .NET (روی runner ویندوز نصب شده)
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
-          use-global-dotnet: true  # چون .NET روی runner ویندوز نصب شده
+          use-global-dotnet: true
 
+      # 4️⃣ Restore dependencies (مسیر نسبی به root repo)
       - name: Restore dependencies
         run: dotnet restore PaymentGateway.API/PaymentGateway.API/PaymentGateway.API.csproj
 
+      # 5️⃣ Build project
       - name: Build project
         run: dotnet build PaymentGateway.API/PaymentGateway.API/PaymentGateway.API.csproj --configuration Release --no-restore
 
+      # 6️⃣ Run unit tests
       - name: Run unit tests
         run: dotnet test PaymentGateway.Application.Tests/PaymentGateway.Application.Tests.csproj --no-build --verbosity normal
 
+      # 7️⃣ Publish project
       - name: Publish project
         run: dotnet publish PaymentGateway.API/PaymentGateway.API/PaymentGateway.API.csproj -c Release -o ./publish
 
+      # 8️⃣ Docker Compose Build & Up
       - name: Docker Compose Build & Up
         run: |
           docker-compose down
           docker-compose up -d --build
 
+      # 9️⃣ Wait for API to start
       - name: Wait for API to start
         run: |
           retries=10
