@@ -1,0 +1,31 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build Folders
+bin/
+obj/
+publish/
+
+# Rider IDE
+.idea/
+
+# Resharper
+_ReSharper*/
+
+# User-specific files
+*.rsuser
+*.sln.docstates
+
+# Node / npm (if any)
+node_modules/
+
+# Logs
+*.log
+
+# Docker
+docker-compose.override.yml
+
+# Secrets
+*.secret
