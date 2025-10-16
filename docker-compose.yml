@@ -1,36 +1,48 @@
-version: '3.8'
+name: .NET CI with Docker Compose
 
-services:
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: paymentgateway-sql
-    environment:
-      SA_PASSWORD: "YourPassword123"
-      ACCEPT_EULA: "Y"
-    ports:
-      - "1434:1433"  # پورت متفاوت روی میزبان
-    networks:
-      - paymentgateway-net
-    restart: unless-stopped
+on:
+  push:
+    branches:
+      - main
+      - feature/*
 
-  api:
-    image: paymentgateway.api
-    container_name: paymentgateway-api
-    build:
-      context: .
-      dockerfile: PaymentGateway.API/Dockerfile
-    ports:
-      - "8080:8080"
-    environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      # دیتابیس با نام متفاوت
-      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=PaymentGatewayDockerDb;User Id=sa;Password=YourPassword123;TrustServerCertificate=True"
-    depends_on:
-      - sqlserver
-    networks:
-      - paymentgateway-net
-    restart: unless-stopped
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
 
-networks:
-  paymentgateway-net:
-    driver: bridge
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore PaymentGateway.API/PaymentGateway.API.csproj
+
+      - name: Build project
+        run: dotnet build PaymentGateway.API/PaymentGateway.API.csproj --configuration Release --no-restore
+
+      - name: Run unit tests
+        run: dotnet test PaymentGateway.Application.Tests/PaymentGateway.Application.Tests.csproj --no-build --verbosity normal
+
+      - name: Publish project
+        run: dotnet publish PaymentGateway.API/PaymentGateway.API.csproj -c Release -o ./publish
+
+      - name: Docker Compose Build & Up
+        run: |
+          # Stop and remove existing containers
+          docker-compose -f docker-compose.yml down
+          # Build new images and run containers
+          docker-compose -f docker-compose.yml up -d --build
+
+      - name: Wait for API to start
+        run: |
+          retries=10
+          until curl -f http://localhost:8080/swagger || [ $retries -eq 0 ]; do
+            echo "Waiting for API..."
+            sleep 5
+            ((retries--))
+          done
