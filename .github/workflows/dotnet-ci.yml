@@ -25,28 +25,37 @@ jobs:
           --health-retries 5
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '8.0.x'
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
 
-    - name: Restore dependencies
-      run: dotnet restore PaymentGateway.API/PaymentGateway.API.csproj
+      - name: Restore dependencies
+        run: dotnet restore PaymentGateway.API/PaymentGateway.API.csproj
 
-    - name: Build project
-      run: dotnet build PaymentGateway.API/PaymentGateway.API.csproj --configuration Release --no-restore
+      - name: Build project
+        run: dotnet build PaymentGateway.API/PaymentGateway.API.csproj --configuration Release --no-restore
 
-    - name: Run unit tests
-      run: dotnet test PaymentGateway.Application.Tests/PaymentGateway.Application.Tests.csproj --no-build --verbosity normal
+      - name: Run unit tests
+        run: dotnet test PaymentGateway.Application.Tests/PaymentGateway.Application.Tests.csproj --no-build --verbosity normal
 
-    - name: Publish project
-      run: dotnet publish PaymentGateway.API/PaymentGateway.API.csproj -c Release -o ./publish
+      - name: Publish project
+        run: dotnet publish PaymentGateway.API/PaymentGateway.API.csproj -c Release -o ./publish
 
-    - name: Build Docker image
-      run: docker build -t paymentgateway.api .
+      - name: Build Docker image
+        run: docker build -t paymentgateway.api .
 
-    - name: Run Docker container
-      run: docker run -d -p 8080:80 --name paymentgateway-api paymentgateway.api
+      - name: Cleanup previous container
+        run: docker rm -f paymentgateway-api || true
+
+      - name: Run Docker container
+        run: docker run -d -p 8080:80 --name paymentgateway-api paymentgateway.api
+
+      - name: Wait for API
+        run: sleep 15
+
+      - name: Test API availability
+        run: curl -f http://localhost:8080/swagger
