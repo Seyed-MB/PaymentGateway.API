@@ -3,56 +3,50 @@ name: .NET CI with Docker Compose (Auto Build & Run)
 on:
   push:
     branches:
-      - master
-      - featuer/*
+      - main
+      - feature/*
 
 jobs:
   build-and-deploy:
     runs-on: self-hosted
 
     steps:
-      # 1️⃣ Checkout repository
+      # 1️⃣ دریافت سورس
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # 2️⃣ Show workspace (برای debug)
-      - name: Show workspace
-        run: |
-          pwd
-          ls -R
-
-      # 3️⃣ Use installed .NET (روی runner ویندوز نصب شده)
+      # 2️⃣ استفاده از .NET نصب شده روی runner
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
           use-global-dotnet: true
 
-      # 4️⃣ Restore dependencies (مسیر نسبی به root repo)
+      # 3️⃣ Restore
       - name: Restore dependencies
-        run: dotnet restore PaymentGateway.API/PaymentGateway.API/PaymentGateway.API.csproj
+        run: dotnet restore PaymentGateway.API/PaymentGateway.API.csproj
 
-      # 5️⃣ Build project
+      # 4️⃣ Build
       - name: Build project
-        run: dotnet build PaymentGateway.API/PaymentGateway.API/PaymentGateway.API.csproj --configuration Release --no-restore
+        run: dotnet build PaymentGateway.API/PaymentGateway.API.csproj --configuration Release --no-restore
 
-      # 6️⃣ Run unit tests
+      # 5️⃣ Unit tests
       - name: Run unit tests
-        run: dotnet test PaymentGateway.Application.Tests/PaymentGateway.Application.Tests.csproj --no-build --verbosity normal
+        run: dotnet test PaymentGateway.Tests/PaymentGateway.Tests.csproj --no-build --verbosity normal
 
-      # 7️⃣ Publish project
+      # 6️⃣ Publish
       - name: Publish project
-        run: dotnet publish PaymentGateway.API/PaymentGateway.API/PaymentGateway.API.csproj -c Release -o ./publish
+        run: dotnet publish PaymentGateway.API/PaymentGateway.API.csproj -c Release -o ./publish
 
-      # 8️⃣ Docker Compose Build & Up
+      # 7️⃣ Docker Compose Build & Up
       - name: Docker Compose Build & Up
         run: |
           docker-compose down
           docker-compose up -d --build
 
-      # 9️⃣ Wait for API to start
+      # 8️⃣ Wait for API to start
       - name: Wait for API to start
         run: |
           retries=10
