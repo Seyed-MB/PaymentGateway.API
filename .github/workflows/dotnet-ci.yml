@@ -1,4 +1,4 @@
-name: .NET CI with Docker (Local Registry)
+name: .NET CI with Docker (Auto Build & Run)
 
 on:
   push:
@@ -8,26 +8,11 @@ on:
 
 jobs:
   build-test-docker:
-    # اجرای workflow روی self-hosted runner
     runs-on: self-hosted
-
-    services:
-      sqlserver:
-        image: mcr.microsoft.com/mssql/server:2022-latest
-        ports:
-          - 1434:1433
-        env:
-          SA_PASSWORD: "YourPassword123"
-          ACCEPT_EULA: "Y"
-        options: >-
-          --health-cmd "exit 0"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
@@ -47,22 +32,22 @@ jobs:
         run: dotnet publish PaymentGateway.API/PaymentGateway.API.csproj -c Release -o ./publish
 
       - name: Build Docker image
-        run: docker build -t paymentgateway.api .
+        run: docker build -t paymentgateway.api:latest .
 
       - name: Cleanup previous container
-        run: docker rm -f paymentgateway-api || true
-
-      - name: Tag Docker image for local registry
-        run: docker tag paymentgateway.api localhost:5000/paymentgateway.api:latest
-
-      - name: Push Docker image to local registry
-        run: docker push localhost:5000/paymentgateway.api:latest
+        run: |
+          if [ $(docker ps -aq -f name=paymentgateway-api) ]; then
+            docker rm -f paymentgateway-api
+          fi
 
       - name: Run Docker container
-        run: docker run -d -p 8080:80 --name paymentgateway-api localhost:5000/paymentgateway.api:latest
+        run: docker run -d -p 8080:80 --name paymentgateway-api paymentgateway.api:latest
 
-      - name: Wait for API
-        run: sleep 15
-
-      - name: Test API availability
-        run: curl -f http://localhost:8080/swagger
+      - name: Wait for API to start
+        run: |
+          retries=10
+          until curl -f http://localhost:8080/swagger || [ $retries -eq 0 ]; do
+            echo "Waiting for API..."
+            sleep 5
+            ((retries--))
+          done
