@@ -3,8 +3,8 @@ name: .NET CI with Docker Compose (Auto Build & Run)
 on:
   push:
     branches:
-      - master
-      - featuer/*
+      - main
+      - feature/*
 
 jobs:
   build-and-deploy:
@@ -13,24 +13,26 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Setup .NET (use existing installation)
+      - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
-          use-global-dotnet: true   # ⚡ از نصب موجود .NET استفاده می‌کند
+          use-global-dotnet: true  # چون .NET روی runner ویندوز نصب شده
 
       - name: Restore dependencies
-        run: dotnet restore PaymentGateway.API.csproj
+        run: dotnet restore PaymentGateway.API/PaymentGateway.API/PaymentGateway.API.csproj
 
       - name: Build project
-        run: dotnet build PaymentGateway.API.csproj --configuration Release --no-restore
+        run: dotnet build PaymentGateway.API/PaymentGateway.API/PaymentGateway.API.csproj --configuration Release --no-restore
 
       - name: Run unit tests
-        run: dotnet test PaymentGateway.Application.Tests.csproj --no-build --verbosity normal
+        run: dotnet test PaymentGateway.Application.Tests/PaymentGateway.Application.Tests.csproj --no-build --verbosity normal
 
       - name: Publish project
-        run: dotnet publish PaymentGateway.API.csproj -c Release -o ./publish
+        run: dotnet publish PaymentGateway.API/PaymentGateway.API/PaymentGateway.API.csproj -c Release -o ./publish
 
       - name: Docker Compose Build & Up
         run: |
