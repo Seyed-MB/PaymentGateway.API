@@ -7,12 +7,13 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy csproj and restore first (Docker cache optimization)
-COPY ["PaymentGateway.API/PaymentGateway.API.csproj", "./"]
+# Copy csproj and restore first
+COPY PaymentGateway.API/PaymentGateway.API.csproj ./
 RUN dotnet restore "PaymentGateway.API.csproj"
 
-# Copy everything else and build/publish
+# Copy everything else
 COPY PaymentGateway.API/ ./PaymentGateway.API/
+WORKDIR /src/PaymentGateway.API
 RUN dotnet build "PaymentGateway.API.csproj" -c Release -o /app/build
 RUN dotnet publish "PaymentGateway.API.csproj" -c Release -o /app/publish
 
