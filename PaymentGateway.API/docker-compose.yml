@@ -7,14 +7,13 @@ services:
       ACCEPT_EULA: "Y"
     ports:
       - "1434:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql  # ⚡ این خط باعث میشه دیتابیس حفظ بشه
     healthcheck:
-      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "YourPassword123", "-Q", "SELECT 1"]
+      test: ["CMD", "sqlcmd", "-S", "localhost", "-U", "sa", "-P", "YourPassword123", "-Q", "SELECT 1"]
       interval: 10s
-      retries: 10
-      start_period: 20s
-    networks:
-      - paymentgateway-net
-    restart: unless-stopped
+      timeout: 5s
+      retries: 5
 
   api:
     build:
@@ -27,8 +26,8 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=PaymentGatewayDockerDb;User Id=sa;Password=YourPassword123;TrustServerCertificate=True"
     depends_on:
-      sqlserver:
-        condition: service_healthy
+      - sqlserver
+  
     networks:
       - paymentgateway-net
     restart: unless-stopped
@@ -36,3 +35,6 @@ services:
 networks:
   paymentgateway-net:
     driver: bridge
+
+volumes:
+  sqlserver-data:   # ⚡ volume تعریف شده برای حفظ دیتابیس
