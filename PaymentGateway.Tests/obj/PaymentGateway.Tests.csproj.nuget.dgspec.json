@@ -51,6 +51,10 @@
               "target": "Package",
               "version": "[2.1.66, )"
             },
+            "Dapper.MoqTests": {
+              "target": "Package",
+              "version": "[1.7.13, )"
+            },
             "MediatR": {
               "target": "Package",
               "version": "[13.0.0, )"
@@ -62,6 +66,10 @@
             "Microsoft.SqlServer.Server": {
               "target": "Package",
               "version": "[1.0.0, )"
+            },
+            "Moq.Dapper": {
+              "target": "Package",
+              "version": "[1.0.7, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -87,7 +95,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.415/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
@@ -183,7 +191,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.415/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

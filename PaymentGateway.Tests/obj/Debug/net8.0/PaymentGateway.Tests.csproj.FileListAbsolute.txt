@@ -60,7 +60,6 @@ C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\bin\Debug\net8.0\S
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\bin\Debug\net8.0\System.Memory.Data.dll
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
-C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\bin\Debug\net8.0\System.Text.Json.dll
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\bin\Debug\net8.0\xunit.abstractions.dll
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\bin\Debug\net8.0\xunit.assert.dll
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\bin\Debug\net8.0\xunit.core.dll
@@ -164,3 +163,5 @@ C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\obj\Debug\net8.0\r
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\obj\Debug\net8.0\PaymentGateway.Tests.pdb
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\obj\Debug\net8.0\PaymentGateway.Tests.genruntimeconfig.cache
 C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\obj\Debug\net8.0\ref\PaymentGateway.Tests.dll
+C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\bin\Debug\net8.0\Moq.Dapper.dll
+C:\PaymentGateway.API\PaymentGateway.API\PaymentGateway.Tests\bin\Debug\net8.0\Dapper.MoqTests.dll
