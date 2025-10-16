@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-      - featuer/*
+      - feature/*
 
 jobs:
   build-and-deploy:
@@ -27,18 +27,22 @@ jobs:
       # 3️⃣ Restore dependencies
       - name: Restore dependencies
         run: dotnet restore PaymentGateway.API/PaymentGateway.API.csproj
+        shell: pwsh
 
       # 4️⃣ Build project
       - name: Build project
         run: dotnet build PaymentGateway.API/PaymentGateway.API.csproj --configuration Release --no-restore
+        shell: pwsh
 
       # 5️⃣ Run unit tests
       - name: Run unit tests
         run: dotnet test PaymentGateway.Tests/PaymentGateway.Tests.csproj --no-build --verbosity normal
+        shell: pwsh
 
       # 6️⃣ Publish project
       - name: Publish project
         run: dotnet publish PaymentGateway.API/PaymentGateway.API.csproj -c Release -o ./publish
+        shell: pwsh
 
       # 7️⃣ Docker Compose Build & Up
       - name: Docker Compose Build & Up
@@ -46,13 +50,25 @@ jobs:
           cd PaymentGateway.API  # مسیر Dockerfile
           docker-compose down
           docker-compose up -d --build
+        shell: pwsh
 
-      # 8️⃣ Wait for API to start
+      # 8️⃣ Wait for API to start (PowerShell)
       - name: Wait for API to start
         run: |
-          retries=10
-          until curl -f http://localhost:8080/swagger || [ $retries -eq 0 ]; do
-            echo "Waiting for API..."
-            sleep 5
-            ((retries--))
-          done
+          $retries = 10
+          do {
+              try {
+                  Invoke-WebRequest http://localhost:8080/swagger -UseBasicParsing -ErrorAction Stop
+                  Write-Host "API is up!"
+                  break
+              } catch {
+                  Write-Host "Waiting for API..."
+                  Start-Sleep -Seconds 5
+                  $retries--
+              }
+          } while ($retries -gt 0)
+          if ($retries -eq 0) {
+              Write-Error "API did not start in time."
+              exit 1
+          }
+        shell: pwsh
