@@ -43,7 +43,7 @@ jobs:
       # 7️⃣ Docker Compose Build & Up
       - name: Docker Compose Build & Up
         run: |
-          cd PaymentGateway.API/PaymentGateway.API  # مسیر Dockerfile
+          cd PaymentGateway.API  # مسیر Dockerfile
           docker-compose down
           docker-compose up -d --build
 

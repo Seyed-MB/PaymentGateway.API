@@ -20,7 +20,7 @@ services:
 
   api:
     build:
-      context: ./PaymentGateway.API/PaymentGateway.API   # به فولدر سوم اشاره می‌کنه
+      context: .   # به فولدر سوم اشاره می‌کنه
       dockerfile: Dockerfile
     container_name: paymentgateway-api
     ports:
