@@ -3,7 +3,7 @@ name: .NET CI with Docker Compose (Auto Build & Run)
 on:
   push:
     branches:
-      - main
+      - master
       - feature/*
 
 jobs:
