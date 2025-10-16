@@ -27,6 +27,7 @@ public class CreateProductHandlerTests
 
         var handler = new CreateProductHandler(mockRepo.Object);
 
+
         // Act
         var result = await handler.Handle(command, CancellationToken.None);
 
