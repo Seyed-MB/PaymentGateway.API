@@ -1,4 +1,4 @@
-name: .NET CI with Docker (Auto Build & Run)
+name: .NET CI with Docker Compose (Auto Build & Run)
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
       - feature/*
 
 jobs:
-  build-test-docker:
+  build-and-deploy:
     runs-on: self-hosted
 
     steps:
@@ -31,17 +31,12 @@ jobs:
       - name: Publish project
         run: dotnet publish PaymentGateway.API/PaymentGateway.API.csproj -c Release -o ./publish
 
-      - name: Build Docker image
-        run: docker build -t paymentgateway.api:latest .
-
-      - name: Cleanup previous container
+      - name: Docker Compose Build & Up
         run: |
-          if [ $(docker ps -aq -f name=paymentgateway-api) ]; then
-            docker rm -f paymentgateway-api
-          fi
-
-      - name: Run Docker container
-        run: docker run -d -p 8080:80 --name paymentgateway-api paymentgateway.api:latest
+          # Stop and remove all existing containers
+          docker-compose -f docker-compose.yml down
+          # Build new images and run containers
+          docker-compose -f docker-compose.yml up -d --build
 
       - name: Wait for API to start
         run: |
