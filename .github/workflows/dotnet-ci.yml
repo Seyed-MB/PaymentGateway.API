@@ -1,4 +1,4 @@
-name: .NET CI with Docker
+name: .NET CI with Docker (Local Registry)
 
 on:
   push:
@@ -8,7 +8,8 @@ on:
 
 jobs:
   build-test-docker:
-    runs-on: ubuntu-latest
+    # اجرای workflow روی self-hosted runner
+    runs-on: self-hosted
 
     services:
       sqlserver:
@@ -19,9 +20,9 @@ jobs:
           SA_PASSWORD: "YourPassword123"
           ACCEPT_EULA: "Y"
         options: >-
-          --health-cmd "exit 0" 
-          --health-interval 10s 
-          --health-timeout 5s 
+          --health-cmd "exit 0"
+          --health-interval 10s
+          --health-timeout 5s
           --health-retries 5
 
     steps:
@@ -51,8 +52,14 @@ jobs:
       - name: Cleanup previous container
         run: docker rm -f paymentgateway-api || true
 
+      - name: Tag Docker image for local registry
+        run: docker tag paymentgateway.api localhost:5000/paymentgateway.api:latest
+
+      - name: Push Docker image to local registry
+        run: docker push localhost:5000/paymentgateway.api:latest
+
       - name: Run Docker container
-        run: docker run -d -p 8080:80 --name paymentgateway-api paymentgateway.api
+        run: docker run -d -p 8080:80 --name paymentgateway-api localhost:5000/paymentgateway.api:latest
 
       - name: Wait for API
         run: sleep 15
