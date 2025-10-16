@@ -14,11 +14,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup .NET
+      - name: Setup .NET (use existing installation)
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
-          install-dir: 'C:\dotnet'   # مسیر نصب دلخواه برای رفع مشکل دسترسی
+          use-global-dotnet: true   # ⚡ از نصب موجود .NET استفاده می‌کند
 
       - name: Restore dependencies
         run: dotnet restore PaymentGateway.API.csproj
