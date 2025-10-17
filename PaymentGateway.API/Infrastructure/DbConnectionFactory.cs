@@ -13,7 +13,8 @@ public class DbConnectionFactory : IDapperRepository
 
     public IDbConnection CreateConnection()
     {
-       string _connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
+        string _connectionString = "Server=localhost,1434;Database=PaymentGatewayDockerDb;User Id=sa;Password=YourPassword123;TrustServerCertificate=True";
+            //Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
         return new SqlConnection(_configuration.GetConnectionString(_connectionString));
     }
 }
