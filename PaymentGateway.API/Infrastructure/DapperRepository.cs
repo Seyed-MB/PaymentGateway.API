@@ -13,10 +13,12 @@ public class DapperRepository : IDapperRepository
 
     public IDbConnection CreateConnection()
     {
-        string _connectionString = "Server=localhost,1434;Database=PaymentGatewayDockerDb;User Id=sa;Password=YourPassword123;TrustServerCertificate=True";
+        //string _connectionString = "Server=localhost,1434;Database=PaymentGatewayDockerDb;User Id=sa;Password=YourPassword123;TrustServerCertificate=True";
+        string _connectionString = "Server=sqlserver-service,1433;Database=PaymentGatewayDockerDb;User Id=sa;Password=YourPassword123;TrustServerCertificate=True";
+        return new SqlConnection(_connectionString);
 
         //return new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
-        return new SqlConnection(_connectionString);
+        //return new SqlConnection(_connectionString);
     }
 }
