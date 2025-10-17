@@ -13,6 +13,7 @@ public class DbConnectionFactory : IDapperRepository
 
     public IDbConnection CreateConnection()
     {
-        return new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+       string _connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
+        return new SqlConnection(_configuration.GetConnectionString(_connectionString));
     }
 }
