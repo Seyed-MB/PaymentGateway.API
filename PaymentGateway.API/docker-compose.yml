@@ -10,7 +10,9 @@ services:
     ports:
       - "1434:1433"
     volumes:
-      - sqlserver-data:/var/opt/mssql  # دیتابیس حفظ میشه
+      - sqlserver-data:/var/opt/mssql
+    networks:
+      - paymentgateway-net
     restart: unless-stopped
 
   api:
