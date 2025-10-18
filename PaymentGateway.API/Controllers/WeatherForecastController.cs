@@ -24,6 +24,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
+
     public async Task<IActionResult> GetAll()
     {
         var products = await _mediator.Send(new GetAllProductsQuery());
