@@ -21,10 +21,9 @@ spec:
           - |
             echo "Waiting for SQL Server..."
             until sqlcmd -S sqlserver-service,1433 -U sa -P "YourPassword123" -Q "SELECT 1" > /dev/null 2>&1; do
-              echo "SQL Server is not ready yet. Sleeping 5s..."
               sleep 5
             done
-            echo "SQL Server is ready!"
+            echo "SQL Server is ready"
       containers:
       - name: paymentgateway-api
         image: paymentgatewayapi-api
